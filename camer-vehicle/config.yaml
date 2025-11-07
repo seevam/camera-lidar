@@ -1,0 +1,32 @@
+# Camera Vehicle Configuration
+
+camera:
+  device_id: 0  # 0 for default camera
+  width: 640
+  height: 480
+  fps: 30
+
+lane_detection:
+  threshold: 60  # Threshold for black line detection (0-255)
+  roi_top_percent: 0.6  # Start ROI at 60% of frame height
+  min_contour_area: 500  # Minimum area to consider as line
+  min_confidence: 0.3  # Minimum confidence to follow line
+
+arduino:
+  port: "/dev/ttyUSB0"  # Linux
+  # port: "COM3"  # Windows
+  baudrate: 9600
+  max_speed: 150  # 0-255
+
+pid:
+  kp: 0.5  # Proportional gain
+  ki: 0.0  # Integral gain
+  kd: 0.1  # Derivative gain
+  max_output: 45  # Maximum steering angle
+
+logging:
+  enabled: true
+  log_dir: "data/logs"
+  save_video: false
+
+debug: true  # Show visualization window
