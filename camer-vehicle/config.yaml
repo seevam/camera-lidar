@@ -16,7 +16,7 @@ arduino:
   port: "/dev/ttyUSB0"  # Linux
   # port: "COM3"  # Windows
   baudrate: 9600
-  max_speed: 150  # 0-255
+  max_speed: 220  # 0-255 (increased for more power)
 
 pid:
   kp: 0.5  # Proportional gain
