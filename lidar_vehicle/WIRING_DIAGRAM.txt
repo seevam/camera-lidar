@@ -1,0 +1,156 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    RPLiDAR ROBOT WIRING DIAGRAM                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         ARDUINO MEGA 2560                               │
+│                                                                         │
+│  Digital Pins (PWM~)        Serial Pins                                │
+│  ┌──────────────┐           ┌─────────────┐                            │
+│  │ Pin 3  ~ ────┼──────────>│ RPLiDAR     │ (Motor Control - ORANGE)   │
+│  │ Pin 5    ────┼────┐      │ MOTOR PWM   │                            │
+│  │ Pin 6    ────┼────┼──┐   └─────────────┘                            │
+│  │ Pin 7    ────┼────┼──┼─┐                                            │
+│  │ Pin 8    ────┼────┼──┼─┼──┐                                         │
+│  │ Pin 9  ~ ────┼────┼──┼─┼──┼──┐                                      │
+│  │ Pin 10 ~ ────┼────┼──┼─┼──┼──┼──┐                                   │
+│  └──────────────┘    │  │ │ │ │ │ │                                   │
+│                      │  │ │ │ │ │ │                                   │
+│  Serial1             │  │ │ │ │ │ │                                   │
+│  ┌──────────────┐    │  │ │ │ │ │ │                                   │
+│  │ TX1 (18) ────┼────┼──┼─┼─┼─┼─┼─┼────> RPLiDAR RX (GREEN)           │
+│  │ RX1 (19) ────┼────┼──┼─┼─┼─┼─┼─┼────< RPLiDAR TX (WHITE)           │
+│  └──────────────┘    │  │ │ │ │ │ │                                   │
+│                      │  │ │ │ │ │ │                                   │
+│  Power               │  │ │ │ │ │ │                                   │
+│  ┌──────────────┐    │  │ │ │ │ │ │                                   │
+│  │ 5V       ────┼────┼──┼─┼─┼─┼─┼─┼────> RPLiDAR 5V (RED)             │
+│  │ GND      ────┼────┼──┼─┼─┼─┼─┼─┼────> RPLiDAR GND (BLACK)          │
+│  └──────────────┘    │  │ │ │ │ │ │                                   │
+│                      │  │ │ │ │ │ │                                   │
+└──────────────────────┼──┼─┼─┼─┼─┼─┼───────────────────────────────────┘
+                       │  │ │ │ │ │ │
+                       │  │ │ │ │ │ │
+┌──────────────────────┼──┼─┼─┼─┼─┼─┼───────────────────────────────────┐
+│                MOTOR DRIVER (L298N)                                   │
+│                                                                       │
+│  Control Inputs      │  │ │ │ │ │ │                                  │
+│  ┌──────────────┐    │  │ │ │ │ │ │                                  │
+│  │ IN3      <───┼────┘  │ │ │ │ │ │  (Pin 5  - Left Motor Dir 1)    │
+│  │ IN4      <───┼───────┘ │ │ │ │ │  (Pin 6  - Left Motor Dir 2)    │
+│  │ ENB (PWM)<───┼─────────┼─┼─┼─┼─┘  (Pin 10 - Left Motor Speed)     │
+│  │              │         │ │ │ │                                    │
+│  │ IN1      <───┼─────────┘ │ │ │    (Pin 7  - Right Motor Dir 1)   │
+│  │ IN2      <───┼───────────┘ │ │    (Pin 8  - Right Motor Dir 2)   │
+│  │ ENA (PWM)<───┼─────────────┘ │    (Pin 9  - Right Motor Speed)   │
+│  └──────────────┘               │                                    │
+│                                 │                                    │
+│  Motor Outputs                  │                                    │
+│  ┌──────────────┐               │                                    │
+│  │ OUT1     ────┼───────> Left Motor (+)                             │
+│  │ OUT2     ────┼───────> Left Motor (-)                             │
+│  │ OUT3     ────┼───────> Right Motor (+)                            │
+│  │ OUT4     ────┼───────> Right Motor (-)                            │
+│  └──────────────┘                                                    │
+│                                                                       │
+│  Power Input                                                          │
+│  ┌──────────────┐                                                    │
+│  │ VCC (7-12V)  │ <───── Battery Pack (7.4V LiPo recommended)        │
+│  │ GND          │ <───── Battery GND (MUST connect to Arduino GND!)  │
+│  └──────────────┘                                                    │
+│                                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         PIN ASSIGNMENT SUMMARY                             ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Arduino Pin │ Connection                        │ Type                    ║
+╠═════════════╪═══════════════════════════════════╪═════════════════════════╣
+║ Pin 3  (PWM)│ RPLiDAR MOTOR (Orange/Yellow)     │ **CRITICAL - MOTOR!**   ║
+║ Pin 5       │ Motor Driver IN3 (Left Dir 1)     │ Digital Output          ║
+║ Pin 6  (PWM)│ Motor Driver IN4 (Left Dir 2)     │ Digital Output          ║
+║ Pin 7       │ Motor Driver IN1 (Right Dir 1)    │ Digital Output          ║
+║ Pin 8       │ Motor Driver IN2 (Right Dir 2)    │ Digital Output          ║
+║ Pin 9  (PWM)│ Motor Driver ENA (Right Speed)    │ PWM Output              ║
+║ Pin 10 (PWM)│ Motor Driver ENB (Left Speed)     │ PWM Output              ║
+║ Pin 18 (TX1)│ RPLiDAR RX (Green)                │ Serial TX               ║
+║ Pin 19 (RX1)│ RPLiDAR TX (White)                │ Serial RX               ║
+║ 5V          │ RPLiDAR 5V (Red)                  │ Power (+5V)             ║
+║ GND         │ RPLiDAR GND + Motor Driver GND    │ Common Ground           ║
+╚═════════════╧═══════════════════════════════════╧═════════════════════════╝
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     RPLiDAR A1/A2 WIRE COLORS                              ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Wire Color        │ Function      │ Arduino Connection                     ║
+╠═══════════════════╪═══════════════╪════════════════════════════════════════╣
+║ BLACK             │ GND           │ GND                                    ║
+║ RED               │ 5V Power      │ 5V (needs 2A capability!)              ║
+║ GREEN             │ RX (input)    │ TX1 (Pin 18)                           ║
+║ WHITE             │ TX (output)   │ RX1 (Pin 19)                           ║
+║ ORANGE/YELLOW     │ MOTOR CTRL    │ Pin 3 (PWM) **CRITICAL!**              ║
+╚═══════════════════╧═══════════════╧════════════════════════════════════════╝
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                           POWER SETUP                                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Option 1: Single 7.4V LiPo Battery
+──────────────────────────────────
+    7.4V LiPo Battery
+         │
+         ├──> Motor Driver VCC (7-12V input)
+         │         │
+         │         └──> 5V regulator output ──> Arduino 5V pin
+         │                                           │
+         │                                           └──> RPLiDAR 5V
+         │
+         └──> GND ──> Motor Driver GND ──> Arduino GND ──> RPLiDAR GND
+
+
+Option 2: Dual Power (RECOMMENDED for testing)
+───────────────────────────────────────────────
+    USB Power Bank (5V, 2A+)              Battery Pack (7-12V)
+         │                                       │
+         ├──> Arduino VIN or 5V pin              ├──> Motor Driver VCC
+         │         │                             │
+         │         └──> RPLiDAR 5V               │
+         │                                       │
+         └──> GND ─────┬─────────────────────────┘
+                       │
+                   COMMON GROUND (CRITICAL!)
+
+
+⚠️  CRITICAL POWER NOTES:
+    1. RPLiDAR needs 2A capability - USB ports often can't provide this!
+    2. Motor driver MUST have separate power (not from Arduino 5V pin)
+    3. ALL grounds MUST be connected together (common ground)
+    4. Use thick wires (22 AWG or thicker) for motor connections
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        QUICK TROUBLESHOOTING                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+LiDAR not spinning?
+  → Check Pin 3 connection to MOTOR wire (orange/yellow)
+  → Verify code has: analogWrite(RPLIDAR_MOTOR, 255);
+  → Check 5V power can supply 2A
+
+No LiDAR data?
+  → Verify TX1 ↔ RX and RX1 ↔ TX connections
+  → Try swapping TX/RX if needed
+  → Check Serial Monitor baud rate is 115200
+
+Motors not working?
+  → Check motor driver has separate power
+  → Verify common ground connection
+  → Test with manual motor commands
+
+Spins wrong direction?
+  → Swap motor wires on motor driver outputs
+  → Or modify turnRight() function in code
+
